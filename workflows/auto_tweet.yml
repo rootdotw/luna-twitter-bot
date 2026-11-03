@@ -1,0 +1,27 @@
+name: Luna Stream 24/7 Auto-Tweet Bot (Every 3 Hours)
+
+on:
+  schedule:
+    # Runs automatically every 3 hours (8 times per day: 00:00, 03:00, 06:00, 09:00, 12:00, 15:00, 18:00, 21:00 UTC)
+    - cron: '0 */3 * * *'
+  workflow_dispatch: # Allows you to click "Run workflow" manually anytime on GitHub
+
+jobs:
+  post-promo-tweet:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Bot Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Generate & Publish Promotional Tweet to X
+        env:
+          X_API_KEY: ${{ secrets.X_API_KEY }}
+          X_API_SECRET: ${{ secrets.X_API_SECRET }}
+          X_ACCESS_TOKEN: ${{ secrets.X_ACCESS_TOKEN }}
+          X_ACCESS_SECRET: ${{ secrets.X_ACCESS_SECRET }}
+        run: python cloud_poster.py

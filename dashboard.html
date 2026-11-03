@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Luna Stream 4K IPTV — X / Twitter Auto-Promoter Bot</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            heading: ['Outfit', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      background-color: #070A12;
+      color: #F8FAFC;
+    }
+    .glass-card {
+      background: rgba(16, 21, 34, 0.95);
+      border: 1px solid #263247;
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.55);
+    }
+  </style>
+</head>
+<body class="min-h-screen antialiased p-4 sm:p-6">
+
+  <div class="max-w-6xl mx-auto space-y-6">
+
+    <!-- TOP HEADER & AUTO-PILOT CONTROL BAR -->
+    <header class="glass-card rounded-3xl p-5 sm:p-6 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 border-2 border-blue-500/30">
+      <div class="flex items-center gap-3.5">
+        <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-600 to-cyan-400 flex items-center justify-center text-2xl font-black shadow-lg">
+          🐦
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <h1 class="font-heading font-black text-xl sm:text-2xl text-white">LUNA STREAM <span class="text-blue-400">X / TWITTER BOT</span></h1>
+            <span id="badge-active-mode" class="text-[11px] font-extrabold px-2.5 py-0.5 rounded-full bg-blue-500/20 text-blue-300 border border-blue-500/40">PC Browser Mode</span>
+          </div>
+          <p class="text-xs text-slate-400 mt-0.5">
+            Automated 4K IPTV Promotional Bot • Smart Link Rotation (Netlify + Website + WhatsApp +44 7882 507089)
+          </p>
+        </div>
+      </div>
+
+      <!-- Auto-Scheduler Status & Start/Stop Button -->
+      <div class="flex flex-wrap items-center gap-3 w-full lg:w-auto justify-between lg:justify-end bg-[#0C111D] p-3 rounded-2xl border border-[#263247]">
+        <div class="text-left pr-2">
+          <div class="flex items-center gap-2">
+            <span id="sched-dot" class="w-2.5 h-2.5 rounded-full bg-slate-500"></span>
+            <span id="sched-status-text" class="text-xs font-extrabold text-slate-300 uppercase tracking-wider">Auto-Pilot: Paused</span>
+          </div>
+          <div id="sched-countdown" class="text-[11px] text-slate-400 font-mono mt-0.5">
+            Click Start to tweet every 3 hours (8x/day)
+          </div>
+        </div>
+
+        <button id="btn-toggle-autopilot" onclick="toggleAutoPilot()" class="px-4 py-2.5 rounded-xl font-heading font-extrabold text-xs sm:text-sm bg-emerald-600 hover:bg-emerald-500 text-white shadow-lg shadow-emerald-600/25 cursor-pointer transition-all">
+          ▶️ Start 3-Hour Auto-Pilot
+        </button>
+      </div>
+    </header>
+
+    <!-- MAIN 2-COLUMN GRID -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+      <!-- LEFT COLUMN (7 COLS): TWEET COMPOSER, GENERATOR & 1-CLICK POST -->
+      <div class="lg:col-span-7 space-y-6">
+
+        <div class="glass-card rounded-3xl p-5 sm:p-6 space-y-4">
+          <div class="flex flex-wrap items-center justify-between gap-2 border-b border-[#263247] pb-3">
+            <div>
+              <h2 class="font-heading font-bold text-lg text-white">⚡ Smart IPTV Tweet Generator &amp; Instant Poster</h2>
+              <p class="text-xs text-slate-400">Generates unique, non-duplicate IPTV tweets with rotating links &amp; hashtags.</p>
+            </div>
+            <span id="preview-link-badge" class="text-[11px] font-bold px-2.5 py-1 rounded-lg bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">
+              Link: Smart Rotation
+            </span>
+          </div>
+
+          <!-- Category Selector & Generate Button -->
+          <div class="flex flex-col sm:flex-row gap-2.5">
+            <select id="gen-category" onchange="generatePreviewTweet()" class="flex-1 bg-[#0C111D] border border-[#263247] rounded-xl px-3.5 py-2.5 text-xs sm:text-sm text-white font-semibold focus:outline-none focus:border-blue-500">
+              <option value="random">🎲 Smart Random Mix (All 6 IPTV Angles)</option>
+              <option value="football">⚽ Live Football / Premier League / Champions League</option>
+              <option value="ppv_sports">🥊 UFC / Boxing PPV / F1 / Live Sports</option>
+              <option value="movies_vod">🎬 60,000+ 4K Movies &amp; Box-Set Series (VOD)</option>
+              <option value="firestick_setup">🔥 Amazon FireStick &amp; Smart TV 3-Min Setup</option>
+              <option value="cord_cutting">💸 Ditch £100+/mo Cable TV Bills</option>
+              <option value="free_trial">🎁 24-Hour Free 4K IPTV Trial Offer</option>
+            </select>
+
+            <button type="button" onclick="generatePreviewTweet()" class="px-4 py-2.5 rounded-xl bg-blue-600/20 hover:bg-blue-600/30 border border-blue-500/40 text-blue-300 font-bold text-xs sm:text-sm cursor-pointer transition-all">
+              🔄 Spin New Tweet
+            </button>
+          </div>
+
+          <!-- Editable Tweet Textarea -->
+          <div class="space-y-1.5">
+            <div class="flex items-center justify-between text-xs">
+              <label class="font-semibold text-slate-300">Tweet Text (Editable before posting)</label>
+              <span id="char-counter" class="font-mono font-bold text-emerald-400">0 / 280 chars</span>
+            </div>
+            <textarea id="tweet-editor" rows="7" oninput="updateCharCounter()" class="w-full bg-[#0C111D] border border-[#263247] rounded-2xl p-4 text-sm text-white font-sans leading-relaxed focus:outline-none focus:border-blue-500" placeholder="Click 'Spin New Tweet' or type your tweet here..."></textarea>
+          </div>
+
+          <!-- TWO 1-CLICK POST BUTTONS -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+            <button type="button" onclick="postTweetNow('browser_auto')" class="py-3.5 px-4 rounded-2xl bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 text-white font-heading font-black text-sm flex items-center justify-center gap-2 shadow-lg shadow-blue-600/30 cursor-pointer transition-all">
+              <span>🌐</span>
+              <span>Post Now via Browser (No API Key)</span>
+            </button>
+
+            <button type="button" onclick="postTweetNow('x_api')" class="py-3.5 px-4 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white font-heading font-black text-sm flex items-center justify-center gap-2 shadow-lg shadow-emerald-600/30 cursor-pointer transition-all">
+              <span>☁️</span>
+              <span>Post Now via Official X API</span>
+            </button>
+          </div>
+
+          <div id="post-result-banner" class="hidden p-3.5 rounded-xl text-xs font-semibold border"></div>
+        </div>
+
+        <!-- ADD CUSTOM TWEET TEMPLATE CARD -->
+        <div class="glass-card rounded-3xl p-5 sm:p-6 space-y-3">
+          <h3 class="font-heading font-bold text-base text-white">➕ Add Your Own Custom Tweet Template to the Rotation</h3>
+          <p class="text-xs text-slate-400">
+            Use <code class="text-blue-300">{cta}</code> where you want the bot to insert your rotating Website/Netlify/WhatsApp link, and <code class="text-blue-300">{hashtags}</code> for automatic hashtags.
+          </p>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+            <select id="custom-tpl-cat" class="bg-[#0C111D] border border-[#263247] rounded-xl px-3 py-2 text-xs text-white">
+              <option value="free_trial">🎁 24H Free Trial</option>
+              <option value="football">⚽ Football / Sports</option>
+              <option value="ppv_sports">🥊 UFC / Boxing PPV</option>
+              <option value="movies_vod">🎬 Movies &amp; VOD</option>
+              <option value="firestick_setup">🔥 FireStick / Smart TV</option>
+            </select>
+            <input type="text" id="custom-tpl-body" placeholder="e.g. 🔥 Watch all live 4K Sports & 15,000+ channels tonight! {cta} {hashtags}" class="sm:col-span-2 bg-[#0C111D] border border-[#263247] rounded-xl px-3.5 py-2 text-xs text-white">
+          </div>
+          <div class="text-right">
+            <button type="button" onclick="addCustomTemplate()" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-600 text-xs font-bold text-white cursor-pointer">
+              💾 Save Template to Rotation
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- RIGHT COLUMN (5 COLS): CONFIGURATION, LINKS & X API KEYS -->
+      <div class="lg:col-span-5 space-y-6">
+
+        <form onsubmit="saveBotSettings(event)" class="glass-card rounded-3xl p-5 sm:p-6 space-y-4 text-xs">
+          <div class="border-b border-[#263247] pb-3 flex items-center justify-between">
+            <div>
+              <h2 class="font-heading font-bold text-lg text-white">⚙️ Bot Schedule, Links &amp; API Settings</h2>
+              <p class="text-[11px] text-slate-400">Configure how and where the bot promotes Luna Stream IPTV.</p>
+            </div>
+            <span id="api-key-badge" class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30">
+              API Keys: Not Set
+            </span>
+          </div>
+
+          <!-- Default Posting Mode & Interval -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label class="block font-bold text-slate-300 mb-1">Default Auto-Pilot Mode</label>
+              <select id="cfg-mode" class="w-full bg-[#0C111D] border border-[#263247] rounded-xl px-3 py-2.5 text-white font-semibold">
+                <option value="browser_auto">🌐 PC Browser Mode (No Keys)</option>
+                <option value="x_api">☁️ Official X Developer API v2</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block font-bold text-slate-300 mb-1">Tweet Frequency</label>
+              <select id="cfg-interval" class="w-full bg-[#0C111D] border border-[#263247] rounded-xl px-3 py-2.5 text-white font-semibold">
+                <option value="3">Every 3 Hours (8 Tweets/Day)</option>
+                <option value="2">Every 2 Hours (12 Tweets/Day)</option>
+                <option value="4">Every 4 Hours (6 Tweets/Day)</option>
+                <option value="6">Every 6 Hours (4 Tweets/Day)</option>
+                <option value="1">Every 1 Hour (Max Frequency)</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Smart Link Rotation Strategy -->
+          <div>
+            <label class="block font-bold text-slate-300 mb-1">Link Promotion Strategy</label>
+            <select id="cfg-rotation" class="w-full bg-[#0C111D] border border-[#263247] rounded-xl px-3 py-2.5 text-white font-semibold">
+              <option value="smart_mix">🔄 Smart 4-Way Rotation (Netlify + WhatsApp + Main Site)</option>
+              <option value="whatsapp_only">💬 Direct WhatsApp 24H Trial Link Only</option>
+              <option value="netlify_only">⚡ Netlify Landing Page Only (luna-4k-pass.netlify.app)</option>
+              <option value="website_only">🌐 Main Website Only (lunaentertainment.online)</option>
+            </select>
+          </div>
+
+          <!-- Target Links -->
+          <div class="p-3.5 rounded-2xl bg-[#0C111D] border border-[#263247] space-y-2.5">
+            <div class="font-bold text-slate-200">🔗 Your Promotional Links</div>
+            <div>
+              <label class="block text-[11px] text-slate-400 mb-0.5">Netlify Landing Page URL</label>
+              <input type="url" id="cfg-netlify" class="w-full bg-[#101522] border border-[#263247] rounded-lg px-3 py-1.5 text-white font-mono text-[11px]">
+            </div>
+            <div>
+              <label class="block text-[11px] text-slate-400 mb-0.5">Official Website URL</label>
+              <input type="url" id="cfg-website" class="w-full bg-[#101522] border border-[#263247] rounded-lg px-3 py-1.5 text-white font-mono text-[11px]">
+            </div>
+            <div>
+              <label class="block text-[11px] text-slate-400 mb-0.5">WhatsApp Number (for wa.me links &amp; text)</label>
+              <input type="text" id="cfg-whatsapp" class="w-full bg-[#101522] border border-[#263247] rounded-lg px-3 py-1.5 text-emerald-300 font-mono font-bold text-[11px]">
+            </div>
+          </div>
+
+          <!-- PC Browser Auto-Send Settings -->
+          <div class="p-3.5 rounded-2xl bg-[#0C111D] border border-[#263247] space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="font-bold text-blue-300">🌐 PC Browser Mode Options</span>
+              <label class="flex items-center gap-1.5 cursor-pointer">
+                <input type="checkbox" id="cfg-browser-autosend" checked class="accent-blue-500 w-4 h-4">
+                <span class="text-[11px] text-slate-300 font-semibold">Auto-Press Post (Ctrl+Enter)</span>
+              </label>
+            </div>
+            <p class="text-[11px] text-slate-400 leading-relaxed">
+              Make sure you are logged into <strong>x.com</strong> in your default browser. The bot opens the pre-filled tweet and waits <input type="number" id="cfg-browser-wait" value="7" min="3" max="25" class="w-12 bg-[#101522] border border-[#263247] rounded px-1.5 py-0.5 text-center text-white font-mono"> seconds before automatically pressing <code class="text-blue-300">Ctrl+Enter</code> to publish.
+            </p>
+          </div>
+
+          <!-- Official X Free Developer API Keys -->
+          <div class="p-3.5 rounded-2xl bg-[#0C111D] border border-[#263247] space-y-2.5">
+            <div class="flex items-center justify-between">
+              <span class="font-bold text-emerald-300">🔑 Official X Free Developer API Keys (Optional)</span>
+              <a href="https://developer.x.com/en/portal/dashboard" target="_blank" rel="noopener" class="text-[11px] text-blue-400 hover:underline font-semibold">Get Free Keys &rarr;</a>
+            </div>
+            <p class="text-[11px] text-slate-400">
+              Needed only for headless background API posting &amp; 24/7 Cloud Mode (free tier allows up to 17 tweets/day). Leave blank to keep existing saved keys.
+            </p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              <input type="password" id="cfg-x-key" placeholder="API Key (Consumer Key)" class="bg-[#101522] border border-[#263247] rounded-lg px-2.5 py-1.5 text-white font-mono text-[11px]">
+              <input type="password" id="cfg-x-secret" placeholder="API Secret (Consumer Secret)" class="bg-[#101522] border border-[#263247] rounded-lg px-2.5 py-1.5 text-white font-mono text-[11px]">
+              <input type="password" id="cfg-x-token" placeholder="Access Token" class="bg-[#101522] border border-[#263247] rounded-lg px-2.5 py-1.5 text-white font-mono text-[11px]">
+              <input type="password" id="cfg-x-token-secret" placeholder="Access Token Secret" class="bg-[#101522] border border-[#263247] rounded-lg px-2.5 py-1.5 text-white font-mono text-[11px]">
+            </div>
+          </div>
+
+          <button type="submit" class="w-full py-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-heading font-extrabold text-xs sm:text-sm shadow-lg shadow-blue-600/25 cursor-pointer transition-all">
+            💾 Save All Bot Settings
+          </button>
+        </form>
+
+      </div>
+
+    </div>
+
+    <!-- TWEET HISTORY & LOG TABLE -->
+    <div class="glass-card rounded-3xl p-5 sm:p-6 space-y-4">
+      <div class="flex items-center justify-between border-b border-[#263247] pb-3">
+        <div>
+          <h2 class="font-heading font-bold text-lg text-white">📜 Recent Automated &amp; Manual Tweets</h2>
+          <p class="text-xs text-slate-400">Tracks your last 100 tweets so the bot never posts duplicate text.</p>
+        </div>
+        <button type="button" onclick="loadBotStatus()" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-bold text-slate-300 cursor-pointer">
+          🔄 Refresh Log
+        </button>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-xs">
+          <thead class="bg-[#0C111D] text-slate-400 uppercase text-[10px] font-bold border-b border-[#263247]">
+            <tr>
+              <th class="p-3">Time (UTC)</th>
+              <th class="p-3">Angle / Link</th>
+              <th class="p-3">Tweet Content</th>
+              <th class="p-3">Mode</th>
+              <th class="p-3">Status</th>
+            </tr>
+          </thead>
+          <tbody id="history-tbody" class="divide-y divide-slate-800/70 text-slate-300">
+            <tr>
+              <td colspan="5" class="p-6 text-center text-slate-500">No tweets logged yet. Click "Post Now" or start Auto-Pilot above!</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    let botState = null;
+    let nextRunDate = null;
+
+    function updateCharCounter() {
+      const el = document.getElementById('tweet-editor');
+      const counter = document.getElementById('char-counter');
+      if (!el || !counter) return;
+      const raw = el.value || '';
+      const weighted = raw.replace(/https?:\/\/\S+/g, '12345678901234567890123').length;
+      counter.textContent = `${weighted} / 280 chars`;
+      counter.className = weighted > 280
+        ? 'font-mono font-bold text-red-400'
+        : 'font-mono font-bold text-emerald-400';
+    }
+
+    async function loadBotStatus() {
+      try {
+        const res = await fetch('/api/status');
+        const data = await res.json();
+        botState = data.config;
+        nextRunDate = data.next_run_utc ? new Date(data.next_run_utc) : null;
+
+        document.getElementById('cfg-mode').value = botState.mode || 'browser_auto';
+        document.getElementById('cfg-interval').value = String(botState.interval_hours || 3);
+        document.getElementById('cfg-rotation').value = botState.rotation_mode || 'smart_mix';
+        document.getElementById('cfg-netlify').value = botState.netlify_url || '';
+        document.getElementById('cfg-website').value = botState.website_url || '';
+        document.getElementById('cfg-whatsapp').value = botState.whatsapp_number || '';
+        document.getElementById('cfg-browser-autosend').checked = !!botState.browser_auto_press_send;
+        document.getElementById('cfg-browser-wait').value = botState.browser_wait_seconds || 7;
+
+        const modeBadge = document.getElementById('badge-active-mode');
+        if (modeBadge) {
+          modeBadge.textContent = botState.mode === 'x_api' ? '☁️ Official X API v2' : '🌐 PC Browser Mode';
+        }
+
+        const keyBadge = document.getElementById('api-key-badge');
+        if (keyBadge) {
+          if (botState.has_x_api_keys) {
+            keyBadge.textContent = `API Keys: Saved (${botState.x_api_key_preview})`;
+            keyBadge.className = 'px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30';
+          } else {
+            keyBadge.textContent = 'API Keys: Not Set (Using Browser Mode)';
+            keyBadge.className = 'px-2.5 py-1 rounded-full text-[10px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30';
+          }
+        }
+
+        renderAutoPilotStatus();
+        renderHistory(data.history || []);
+      } catch (e) {
+        console.error('Status fetch error:', e);
+      }
+    }
+
+    function renderAutoPilotStatus() {
+      const dot = document.getElementById('sched-dot');
+      const txt = document.getElementById('sched-status-text');
+      const btn = document.getElementById('btn-toggle-autopilot');
+      const cd = document.getElementById('sched-countdown');
+
+      if (botState && botState.auto_schedule_enabled) {
+        dot.className = 'w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping';
+        txt.textContent = `Auto-Pilot: ACTIVE (Every ${botState.interval_hours || 3}h)`;
+        txt.className = 'text-xs font-extrabold text-emerald-400 uppercase tracking-wider';
+        btn.textContent = '⏹️ Stop Auto-Pilot';
+        btn.className = 'px-4 py-2.5 rounded-xl font-heading font-extrabold text-xs sm:text-sm bg-red-600 hover:bg-red-500 text-white shadow-lg cursor-pointer transition-all';
+      } else {
+        dot.className = 'w-2.5 h-2.5 rounded-full bg-slate-500';
+        txt.textContent = 'Auto-Pilot: PAUSED';
+        txt.className = 'text-xs font-extrabold text-slate-300 uppercase tracking-wider';
+        btn.textContent = `▶️ Start ${botState ? botState.interval_hours : 3}-Hour Auto-Pilot`;
+        btn.className = 'px-4 py-2.5 rounded-xl font-heading font-extrabold text-xs sm:text-sm bg-emerald-600 hover:bg-emerald-500 text-white shadow-lg shadow-emerald-600/25 cursor-pointer transition-all';
+        cd.textContent = 'Click Start to automatically post every ' + (botState ? botState.interval_hours : 3) + ' hours';
+      }
+    }
+
+    setInterval(() => {
+      if (botState && botState.auto_schedule_enabled && nextRunDate) {
+        const diffSec = Math.max(0, Math.floor((nextRunDate - new Date()) / 1000));
+        const hrs = Math.floor(diffSec / 3600);
+        const mins = Math.floor((diffSec % 3600) / 60);
+        const secs = diffSec % 60;
+        const cd = document.getElementById('sched-countdown');
+        if (cd) {
+          cd.textContent = `Next auto-tweet in: ${hrs}h ${mins}m ${secs}s`;
+        }
+        if (diffSec === 0) {
+          setTimeout(loadBotStatus, 3000);
+        }
+      }
+    }, 1000);
+
+    async function generatePreviewTweet() {
+      const cat = document.getElementById('gen-category').value || 'random';
+      try {
+        const res = await fetch('/api/preview', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ category: cat })
+        });
+        const data = await res.json();
+        if (data.success && data.preview) {
+          document.getElementById('tweet-editor').value = data.preview.text;
+          const badge = document.getElementById('preview-link-badge');
+          if (badge) {
+            badge.textContent = `Category: ${data.preview.category} • Link: ${data.preview.link_type}`;
+          }
+          updateCharCounter();
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    async function postTweetNow(mode) {
+      const text = document.getElementById('tweet-editor').value.trim();
+      const cat = document.getElementById('gen-category').value || 'random';
+      const banner = document.getElementById('post-result-banner');
+      banner.classList.remove('hidden');
+      banner.className = 'p-3.5 rounded-xl text-xs font-semibold border bg-blue-950/60 border-blue-500/40 text-blue-200';
+      banner.textContent = mode === 'browser_auto'
+        ? '⏳ Opening X/Twitter in your browser and preparing auto-post (Ctrl+Enter)...'
+        : '⏳ Publishing tweet via Official X API v2...';
+
+      try {
+        const res = await fetch('/api/post-now', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ text, category: cat, mode })
+        });
+        const data = await res.json();
+        if (data.success) {
+          banner.className = 'p-3.5 rounded-xl text-xs font-semibold border bg-emerald-950/70 border-emerald-500/40 text-emerald-300';
+          banner.textContent = '✅ ' + (data.message || 'Tweet posted successfully!');
+          await generatePreviewTweet();
+          await loadBotStatus();
+        } else {
+          banner.className = 'p-3.5 rounded-xl text-xs font-semibold border bg-red-950/70 border-red-500/40 text-red-300';
+          banner.textContent = '❌ ' + (data.error || 'Failed to post tweet.');
+          await loadBotStatus();
+        }
+      } catch (e) {
+        banner.className = 'p-3.5 rounded-xl text-xs font-semibold border bg-red-950/70 border-red-500/40 text-red-300';
+        banner.textContent = '❌ Request error: ' + e.message;
+      }
+    }
+
+    async function toggleAutoPilot() {
+      const enable = !(botState && botState.auto_schedule_enabled);
+      const postFirstNow = enable ? confirm('Do you want to post the 1st tweet immediately right now, and then repeat every ' + (botState?.interval_hours || 3) + ' hours?\n\nClick OK to post the 1st tweet in 5 seconds, or Cancel to wait ' + (botState?.interval_hours || 3) + ' hours for the 1st tweet.') : false;
+
+      await fetch('/api/config', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          auto_schedule_enabled: enable,
+          run_first_immediately: postFirstNow
+        })
+      });
+      await loadBotStatus();
+    }
+
+    async function saveBotSettings(e) {
+      e.preventDefault();
+      const payload = {
+        mode: document.getElementById('cfg-mode').value,
+        interval_hours: parseFloat(document.getElementById('cfg-interval').value) || 3,
+        rotation_mode: document.getElementById('cfg-rotation').value,
+        netlify_url: document.getElementById('cfg-netlify').value.trim(),
+        website_url: document.getElementById('cfg-website').value.trim(),
+        whatsapp_number: document.getElementById('cfg-whatsapp').value.trim(),
+        browser_auto_press_send: document.getElementById('cfg-browser-autosend').checked,
+        browser_wait_seconds: parseInt(document.getElementById('cfg-browser-wait').value, 10) || 7,
+        x_api_key: document.getElementById('cfg-x-key').value.trim(),
+        x_api_secret: document.getElementById('cfg-x-secret').value.trim(),
+        x_access_token: document.getElementById('cfg-x-token').value.trim(),
+        x_access_secret: document.getElementById('cfg-x-token-secret').value.trim()
+      };
+
+      const res = await fetch('/api/config', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json();
+      if (data.success) {
+        document.getElementById('cfg-x-key').value = '';
+        document.getElementById('cfg-x-secret').value = '';
+        document.getElementById('cfg-x-token').value = '';
+        document.getElementById('cfg-x-token-secret').value = '';
+        alert('✅ Bot settings saved!');
+        await loadBotStatus();
+        await generatePreviewTweet();
+      }
+    }
+
+    async function addCustomTemplate() {
+      const cat = document.getElementById('custom-tpl-cat').value;
+      const body = document.getElementById('custom-tpl-body').value.trim();
+      if (!body) {
+        alert('Please enter your custom tweet template text.');
+        return;
+      }
+      const res = await fetch('/api/templates/add', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ category: cat, body })
+      });
+      const data = await res.json();
+      if (data.success) {
+        document.getElementById('custom-tpl-body').value = '';
+        alert('✅ Custom template added to rotation!');
+        await generatePreviewTweet();
+      }
+    }
+
+    function renderHistory(items) {
+      const tbody = document.getElementById('history-tbody');
+      if (!tbody) return;
+      if (!items.length) {
+        tbody.innerHTML = '<tr><td colspan="5" class="p-6 text-center text-slate-500">No tweets logged yet. Click "Post Now" or start Auto-Pilot above!</td></tr>';
+        return;
+      }
+      tbody.innerHTML = items.map(item => {
+        const statusBadge = item.status === 'Posted'
+          ? '<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Posted</span>'
+          : '<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-red-500/20 text-red-300 border border-red-500/30">Failed</span>';
+        const safeText = (item.text || '').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g, '<br>');
+        return `
+          <tr class="hover:bg-slate-800/40">
+            <td class="p-3 font-mono text-[11px] text-slate-400 whitespace-nowrap">${item.timestamp || ''}</td>
+            <td class="p-3 whitespace-nowrap">
+              <span class="font-bold text-blue-300 block">${item.category || ''}</span>
+              <span class="text-[10px] text-slate-400">${item.link_type || ''}</span>
+            </td>
+            <td class="p-3 text-slate-200 text-xs max-w-md">${safeText}</td>
+            <td class="p-3 font-mono text-[11px] text-slate-300 whitespace-nowrap">${item.mode || ''}</td>
+            <td class="p-3 whitespace-nowrap">${statusBadge}</td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    window.addEventListener('DOMContentLoaded', async () => {
+      await loadBotStatus();
+      await generatePreviewTweet();
+    });
+  </script>
+</body>
+</html>
